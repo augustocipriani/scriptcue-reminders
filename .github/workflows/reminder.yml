@@ -1,0 +1,49 @@
+name: ScriptCue Reminder
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # every 15 min (UTC); sends any reminder due in the window
+  workflow_dispatch:
+    inputs:
+      test_message:
+        description: 'Send this text immediately as a test (leave blank for a normal schedule run)'
+        required: false
+        default: ''
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run reminders
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEST_MESSAGE: ${{ github.event.inputs.test_message }}
+        run: |
+          send() {
+            curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${CHAT_ID}" \
+              --data-urlencode "text=$1" \
+              -d "disable_web_page_preview=true" >/dev/null
+          }
+          if [ -n "$TEST_MESSAGE" ]; then
+            send "$TEST_MESSAGE"
+            echo "Sent test message."
+            exit 0
+          fi
+          now=$(date -u +%s)
+          count=$(jq 'length' schedule.json)
+          echo "Entries: $count"
+          if [ "$count" -gt 0 ]; then
+            for i in $(seq 0 $((count-1))); do
+              at=$(jq -r ".[$i].at" schedule.json)
+              text=$(jq -r ".[$i].text" schedule.json)
+              at_epoch=$(date -u -d "$at" +%s)
+              diff=$((now - at_epoch))
+              if [ "$diff" -ge 0 ] && [ "$diff" -lt 900 ]; then
+                send "$text"
+                echo "Sent reminder scheduled for $at"
+              fi
+            done
+          fi
