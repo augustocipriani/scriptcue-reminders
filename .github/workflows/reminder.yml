@@ -2,13 +2,16 @@ name: ScriptCue Reminder
 
 on:
   schedule:
-    - cron: '*/15 * * * *'   # every 15 min (UTC); sends any reminder due in the window
+    - cron: '*/10 * * * *'   # GitHub throttles this on low-traffic repos; logic below tolerates late/irregular runs
   workflow_dispatch:
     inputs:
       test_message:
         description: 'Send this text immediately as a test (leave blank for a normal schedule run)'
         required: false
         default: ''
+
+permissions:
+  contents: write
 
 jobs:
   remind:
@@ -27,23 +30,29 @@ jobs:
               --data-urlencode "text=$1" \
               -d "disable_web_page_preview=true" >/dev/null
           }
-          if [ -n "$TEST_MESSAGE" ]; then
-            send "$TEST_MESSAGE"
-            echo "Sent test message."
-            exit 0
-          fi
+          if [ -n "$TEST_MESSAGE" ]; then send "$TEST_MESSAGE"; echo "test sent"; exit 0; fi
           now=$(date -u +%s)
+          changed=0
           count=$(jq 'length' schedule.json)
-          echo "Entries: $count"
           if [ "$count" -gt 0 ]; then
             for i in $(seq 0 $((count-1))); do
+              sent=$(jq -r ".[$i].sent // false" schedule.json)
               at=$(jq -r ".[$i].at" schedule.json)
-              text=$(jq -r ".[$i].text" schedule.json)
               at_epoch=$(date -u -d "$at" +%s)
-              diff=$((now - at_epoch))
-              if [ "$diff" -ge 0 ] && [ "$diff" -lt 900 ]; then
+              # Send once on the first run at or after the scheduled time (tolerates GitHub's irregular cron).
+              if [ "$sent" != "true" ] && [ "$now" -ge "$at_epoch" ]; then
+                text=$(jq -r ".[$i].text" schedule.json)
                 send "$text"
+                jq ".[$i].sent = true" schedule.json > tmp.json && mv tmp.json schedule.json
+                changed=1
                 echo "Sent reminder scheduled for $at"
               fi
             done
+          fi
+          if [ "$changed" = "1" ]; then
+            git config user.name "reminder-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add schedule.json
+            git commit -m "mark reminder(s) sent"
+            git push
           fi
