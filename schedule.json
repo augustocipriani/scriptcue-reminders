@@ -11,6 +11,6 @@
   },
   {
     "at": "2026-06-01T16:20:00+01:00",
-    "text": "⏰ ScriptCue — Day 3 (Mon Jun 1, 5pm work block).\n\n• R2 Reel: 'Transparent-overlay demo' — overlay on a live Zoom/Teams call (differentiator #1). Source clips: UI video.mp4 / Fit/ScriptCue1.mp4.\n• If you generated the Gemini Omni clips (A–D) + app-demo recording, drop them in assets/ and send so I can assemble the premium YouTube video.\n\nOpen Claude Code and say 'run day 3'."
+    "text": "⏰ ScriptCue — next steps (Mon Jun 1, 5pm).\n\n1. YouTube advert: set it PUBLIC, fix description links to /zoom-teleprompter & /interview-teleprompter, pin a comment with scriptcue.uk, add channel link.\n2. GA4 analytics: create the GA4 property and grab the Measurement ID (G-XXXX), then have Claude implement per ScriptCue website/ANALYTICS_GA4_HANDOFF.md.\n3. Ask Claude to cut the vertical 9:16 Short/Reel of the advert.\n4. Day 3 content: R2 'Transparent-overlay demo' Reel (sources: UI video.mp4 / Fit/ScriptCue1.mp4).\n\nOpen Claude Code and say 'run day 3'."
   }
 ]
