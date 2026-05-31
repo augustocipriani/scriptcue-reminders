@@ -8,5 +8,9 @@
     "at": "2026-05-31T10:00:00+01:00",
     "text": "⏰ ScriptCue — Day 2 (Sun, light day).\n\n• Reply to comments/DMs on yesterday's IG Reel\n• Premium YouTube video: generate the 4 Flow clips + record a short app demo (shot list in vault/drafts/youtube-v1-flow.md), then send to Claude to assemble\n• Optional: post 2 IH comments to start earning posting rights\n\nOpen Claude Code and say 'run day 2'.",
     "sent": true
+  },
+  {
+    "at": "2026-06-01T16:20:00+01:00",
+    "text": "⏰ ScriptCue — Day 3 (Mon Jun 1, 5pm work block).\n\n• R2 Reel: 'Transparent-overlay demo' — overlay on a live Zoom/Teams call (differentiator #1). Source clips: UI video.mp4 / Fit/ScriptCue1.mp4.\n• If you generated the Gemini Omni clips (A–D) + app-demo recording, drop them in assets/ and send so I can assemble the premium YouTube video.\n\nOpen Claude Code and say 'run day 3'."
   }
 ]
