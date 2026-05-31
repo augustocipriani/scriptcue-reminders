@@ -3,5 +3,9 @@
     "at": "2026-05-30T12:00:00+01:00",
     "text": "⏰ ScriptCue — Day 1 content session (midday).\n\nReady to post:\n• Hero Reel: assets/reels/R1_hero_2026-05-30.mp4 → Instagram Reels + YouTube Short\n• Indie Hackers launch post (vault/drafts/2026-05-30.md)\n\nOpen Claude Code and say 'run day 1' for captions + walkthrough.",
     "sent": true
+  },
+  {
+    "at": "2026-05-31T10:00:00+01:00",
+    "text": "⏰ ScriptCue — Day 2 (Sun, light day).\n\n• Reply to comments/DMs on yesterday's IG Reel\n• Premium YouTube video: generate the 4 Flow clips + record a short app demo (shot list in vault/drafts/youtube-v1-flow.md), then send to Claude to assemble\n• Optional: post 2 IH comments to start earning posting rights\n\nOpen Claude Code and say 'run day 2'."
   }
 ]
